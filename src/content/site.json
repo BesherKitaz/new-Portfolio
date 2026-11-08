@@ -1,0 +1,55 @@
+{
+  "title": "Besher Kitaz \u2014 Interactive Portfolio",
+  "description": "Explore the projects, technologies, and experiences of software engineer Besher Kitaz through an interactive 3D graph.",
+  "eyebrow": "A CONNECTED WORLD OF IDEAS",
+  "categoryLabel": "CONSTELLATIONS",
+  "categories": [
+    {
+      "id": "projects",
+      "label": "Projects",
+      "color": "#8d9fff",
+      "position": [-5, 2.3, 0]
+    },
+    {
+      "id": "experience",
+      "label": "Experience",
+      "color": "#54d9de",
+      "position": [4.4, 2.4, -1]
+    },
+    {
+      "id": "skills",
+      "label": "Skills",
+      "color": "#b295f5",
+      "position": [4.8, -2, 1]
+    },
+    {
+      "id": "about",
+      "label": "About",
+      "color": "#9dafff",
+      "position": [-4.2, -2.7, 1]
+    },
+    {
+      "id": "contact",
+      "label": "Contact",
+      "color": "#6ce2bf",
+      "position": [0, -3.6, -1]
+    },
+    {
+      "id": "education",
+      "label": "Education",
+      "color": "#edc889",
+      "position": [-6.5, -0.2, -2]
+    },
+    {
+      "id": "leadership",
+      "label": "Leadership",
+      "color": "#e8a4c7",
+      "position": [6.5, 0.1, -2]
+    }
+  ],
+  "motionDuration": 1.25,
+  "featuredLabel": "SELECTED WORK",
+  "footer": "Built on curiosity. Connected by code.",
+  "events": [],
+  "introDescription": "Projects, experiences, and the technologies that connect them. Follow your curiosity."
+}

@@ -1,0 +1,37 @@
+[
+  {
+    "id": "purdue",
+    "title": "Software Engineer",
+    "organization": "Purdue University College of Engineering",
+    "kind": "professional",
+    "start": "2026-06",
+    "end": "2026-08",
+    "summary": "Led the development of SafetyHub, a full-stack makerspace certification management system.",
+    "highlights": [
+      "Designed a Directed Acyclic Graph (DAG) to model training prerequisites and validate certification eligibility.",
+      "Built role-based access control and searchable administrative certification dashboards.",
+      "Tracked student affiliations across 50+ schools and departments."
+    ],
+    "technologies": ["react", "typescript", "express", "postgresql", "axios", "docker"],
+    "projectIds": ["safetyhub"],
+    "url": null
+  },
+  {
+    "id": "ssdt",
+    "title": "Software Engineer Intern",
+    "organization": "Berea College",
+    "kind": "internship",
+    "start": "2025-06",
+    "end": "2025-08",
+    "summary": "Collaborated with 18 engineers on two production open-source systems used across Berea College.",
+    "highlights": [
+      "Improved the Employment Status Form system used by 1,700+ students and 23 administrators.",
+      "Contributed 17+ merged pull requests and 76+ commits.",
+      "Shipped AJAX-driven endpoints and database schema upgrades for CELTS.",
+      "Implemented role-based data visibility across database schemas, UI, and backend logic."
+    ],
+    "technologies": ["git", "github", "open-source-development"],
+    "projectIds": [],
+    "url": "https://github.com/BCStudentSoftwareDevTeam"
+  }
+]

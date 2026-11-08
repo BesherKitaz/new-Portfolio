@@ -1,0 +1,84 @@
+[
+  {
+    "id": "safetyhub",
+    "title": "SafetyHub",
+    "summary": "Safer makerspaces. Smarter certification.",
+    "description": "A full-stack makerspace certification management system developed at Purdue University College of Engineering.",
+    "featured": true,
+    "technologies": ["react", "typescript", "express", "postgresql", "axios", "docker"],
+    "highlights": [
+      "Designed a Directed Acyclic Graph (DAG) to model training prerequisites and validate certification eligibility.",
+      "Built role-based access control and searchable administrative certification dashboards.",
+      "Tracked student affiliations across 50+ schools and departments."
+    ],
+    "screenshots": [],
+    "thumbnail": null,
+    "githubUrl": null,
+    "liveUrl": null,
+    "status": "completed",
+    "caseStudy": {
+      "problem": "Manage makerspace safety training, prerequisite eligibility, and tool certifications across students, staff, and mentors.",
+      "solution": "A multi-level certification system with authorized issuance, role-based permissions, affiliation tracking, and searchable records.",
+      "decisions": [
+        "A Directed Acyclic Graph models prerequisite relationships.",
+        "Docker provides consistent development environments."
+      ],
+      "contributions": [
+        "Led the design and development of the platform.",
+        "Implemented certification eligibility, administrative dashboards, and affiliation tracking."
+      ],
+      "impact": [
+        "Designed for a potential user base of 7,000+ Purdue students and staff.",
+        "Estimated 120 administrative hours saved annually."
+      ]
+    }
+  },
+  {
+    "id": "berea-bazaar",
+    "title": "Berea Bazaar",
+    "summary": "A marketplace built for the Berea community.",
+    "description": "A Berea-exclusive marketplace built and deployed in 24 hours, with college-authenticated access and student-focused buying and selling.",
+    "featured": true,
+    "technologies": ["v0"],
+    "highlights": [
+      "College-authenticated access and secure data handling.",
+      "Refined AI-generated components through iterative prompt engineering."
+    ],
+    "screenshots": [],
+    "thumbnail": null,
+    "githubUrl": "https://github.com/BesherKitaz/Berea-Bazaar",
+    "liveUrl": null,
+    "status": "completed",
+    "caseStudy": {
+      "problem": "Provide a college-exclusive place for students to buy and sell.",
+      "solution": "A deployed marketplace with authenticated access and student-focused features.",
+      "decisions": ["Used V0 by Vercel to accelerate development."],
+      "contributions": ["Built and deployed the platform in 24 hours."],
+      "impact": []
+    }
+  },
+  {
+    "id": "ai-flashcards",
+    "title": "AI Flash Cards",
+    "summary": "Study with spaced repetition and generative AI.",
+    "description": "A full-stack flashcard web app that uses the Google Gemini API to automatically generate study cards.",
+    "featured": false,
+    "technologies": ["react", "flask", "mysql", "gemini"],
+    "highlights": [
+      "Implemented a spaced-repetition algorithm.",
+      "Integrated the Google Gemini API for study-card generation."
+    ],
+    "screenshots": [],
+    "thumbnail": null,
+    "githubUrl": "https://github.com/BesherKitaz/AIFlashCards",
+    "liveUrl": null,
+    "status": "completed",
+    "caseStudy": {
+      "problem": "",
+      "solution": "A full-stack flashcard application with spaced repetition and automated card generation.",
+      "decisions": [],
+      "contributions": ["Built the application using React, Flask, and MySQL."],
+      "impact": []
+    }
+  }
+]

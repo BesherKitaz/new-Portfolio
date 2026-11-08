@@ -1,0 +1,22 @@
+[
+  {
+    "id": "berea",
+    "institution": "Berea College",
+    "degree": "Computer Science",
+    "start": "2024-09",
+    "end": "2028-05",
+    "summary": "Computer Science studies at Berea College. Expected graduation May 2028.",
+    "achievements": [
+      "Berea College Full Ride Scholarship, valued at $204,000.",
+      "Dean\u2019s List: Fall 2024 and Fall 2025."
+    ],
+    "coursework": [
+      "Software Design and Implementation",
+      "Data Structures",
+      "Scalable Algorithms and Objects",
+      "Theory of Computation",
+      "Database Systems",
+      "Operating Systems and Virtual Machines"
+    ]
+  }
+]

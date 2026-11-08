@@ -1,0 +1,206 @@
+[
+  {
+    "id": "python",
+    "name": "Python",
+    "group": "Languages",
+    "description": ""
+  },
+  {
+    "id": "javascript",
+    "name": "JavaScript",
+    "group": "Languages",
+    "description": ""
+  },
+  {
+    "id": "typescript",
+    "name": "TypeScript",
+    "group": "Languages",
+    "description": ""
+  },
+  {
+    "id": "cpp",
+    "name": "C++",
+    "group": "Languages",
+    "description": ""
+  },
+  {
+    "id": "html",
+    "name": "HTML",
+    "group": "Languages",
+    "description": ""
+  },
+  {
+    "id": "css",
+    "name": "CSS",
+    "group": "Languages",
+    "description": ""
+  },
+  {
+    "id": "react",
+    "name": "React",
+    "group": "Frameworks",
+    "description": ""
+  },
+  {
+    "id": "react-navigation",
+    "name": "React Navigation",
+    "group": "Frameworks",
+    "description": ""
+  },
+  {
+    "id": "express",
+    "name": "Express.js",
+    "group": "Frameworks",
+    "description": ""
+  },
+  {
+    "id": "flask",
+    "name": "Flask",
+    "group": "Frameworks",
+    "description": ""
+  },
+  {
+    "id": "bootstrap",
+    "name": "Bootstrap",
+    "group": "Frameworks",
+    "description": ""
+  },
+  {
+    "id": "material-ui",
+    "name": "Material UI",
+    "group": "Frameworks",
+    "description": ""
+  },
+  {
+    "id": "numpy",
+    "name": "NumPy",
+    "group": "Frameworks",
+    "description": ""
+  },
+  {
+    "id": "pandas",
+    "name": "Pandas",
+    "group": "Frameworks",
+    "description": ""
+  },
+  {
+    "id": "axios",
+    "name": "Axios",
+    "group": "Frameworks",
+    "description": ""
+  },
+  {
+    "id": "mysql",
+    "name": "MySQL",
+    "group": "Data",
+    "description": ""
+  },
+  {
+    "id": "postgresql",
+    "name": "PostgreSQL",
+    "group": "Data",
+    "description": ""
+  },
+  {
+    "id": "prisma",
+    "name": "Prisma",
+    "group": "Data",
+    "description": ""
+  },
+  {
+    "id": "peewee",
+    "name": "Peewee",
+    "group": "Data",
+    "description": ""
+  },
+  {
+    "id": "linux-command-line",
+    "name": "Linux Command Line",
+    "group": "Tools",
+    "description": ""
+  },
+  {
+    "id": "git",
+    "name": "Git",
+    "group": "Tools",
+    "description": ""
+  },
+  {
+    "id": "github",
+    "name": "GitHub",
+    "group": "Tools",
+    "description": ""
+  },
+  {
+    "id": "open-source-development",
+    "name": "Open-Source Development",
+    "group": "Tools",
+    "description": ""
+  },
+  {
+    "id": "docker",
+    "name": "Docker",
+    "group": "Tools",
+    "description": ""
+  },
+  {
+    "id": "v0",
+    "name": "V0 by Vercel",
+    "group": "Tools",
+    "description": ""
+  },
+  {
+    "id": "gemini",
+    "name": "Google Gemini API",
+    "group": "Tools",
+    "description": ""
+  },
+  {
+    "id": "java",
+    "name": "Java",
+    "group": "Tools",
+    "description": ""
+  },
+  {
+    "id": "wpilib",
+    "name": "WPILib",
+    "group": "Tools",
+    "description": ""
+  },
+  {
+    "id": "agile",
+    "name": "Agile",
+    "group": "Practices",
+    "description": ""
+  },
+  {
+    "id": "peer-review",
+    "name": "Peer Review",
+    "group": "Practices",
+    "description": ""
+  },
+  {
+    "id": "cross-team-collaboration",
+    "name": "Cross-team Collaboration",
+    "group": "Practices",
+    "description": ""
+  },
+  {
+    "id": "problem-solving",
+    "name": "Problem Solving",
+    "group": "Practices",
+    "description": ""
+  },
+  {
+    "id": "adaptability",
+    "name": "Adaptability",
+    "group": "Practices",
+    "description": ""
+  },
+  {
+    "id": "teamwork",
+    "name": "Teamwork",
+    "group": "Practices",
+    "description": ""
+  }
+]

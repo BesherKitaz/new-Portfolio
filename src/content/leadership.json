@@ -1,0 +1,31 @@
+[
+  {
+    "id": "robotics",
+    "title": "Part-time Mentor and Web Developer",
+    "organization": null,
+    "start": "2024-09",
+    "end": "2026-01",
+    "summary": "Mentored 18 high-school students in Java and robotics software for the FIRST Robotics Competition.",
+    "highlights": [
+      "Guided robot design and build work, resulting in a functional robot that qualified for regional events.",
+      "Developed a responsive team website promoting four major sponsors."
+    ],
+    "technologies": ["java", "wpilib", "github"],
+    "url": "https://github.com/Rat-Fight/rat-fight.github.io"
+  },
+  {
+    "id": "paper-airplanes",
+    "title": "Volunteer Python and Machine Learning Instructor",
+    "organization": "Paper Airplanes",
+    "start": "2023-10",
+    "end": "2024-11",
+    "summary": "Coached three semesters of Women in Tech cohorts from underrepresented communities.",
+    "highlights": [
+      "Taught Python, Flask, and Peewee and guided capstone projects.",
+      "Developed a programming, machine learning, and data analysis curriculum with six mentors.",
+      "The curriculum empowered over 20 students to land jobs."
+    ],
+    "technologies": ["python", "flask", "peewee"],
+    "url": null
+  }
+]

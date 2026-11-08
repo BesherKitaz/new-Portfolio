@@ -1,0 +1,24 @@
+{
+  "id": "besher",
+  "name": "Besher Kitaz",
+  "role": "Software Engineer | Full-Stack Developer",
+  "intro": "Explore my universe.",
+  "bio": "Computer Science at Berea College. Building full-stack software, connecting ideas through code, and helping others learn.",
+  "email": "besher.kitaz.dev@gmail.com",
+  "photo": null,
+  "resumeUrl": "/assets/resume/besher-kitaz-resume.pdf",
+  "socials": [
+    {
+      "label": "GitHub",
+      "url": "https://github.com/BesherKitaz"
+    },
+    {
+      "label": "LinkedIn",
+      "url": "https://www.linkedin.com/in/besher-kitaz/"
+    }
+  ],
+  "researchInterests": [],
+  "publications": [],
+  "testimonials": [],
+  "writing": []
+}

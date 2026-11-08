@@ -22,3 +22,10 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Private source documents (never deployed)
+.private/
+
+# Browser artifacts
+test-results/
+playwright-report/
