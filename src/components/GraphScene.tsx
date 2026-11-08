@@ -11,6 +11,10 @@ import { graph, hash, neighbors, nodeById } from '../graph/model'
 import type { GraphNode } from '../graph/model'
 import { HOME } from '../hooks/useNavigation'
 
+// Raise this angle to look farther down at the overview from above.
+const OVERVIEW_ELEVATION_DEGREES = 18
+const OVERVIEW_ELEVATION = (OVERVIEW_ELEVATION_DEGREES * Math.PI) / 180
+
 interface Props {
   selected: string
   route: string[]
@@ -214,10 +218,12 @@ function CameraJourney({
       const distance =
         (id === HOME ? homeDistance : node.type === 'category' ? 9 : 6.5) * zoom
       const t = duration / Math.max(1, ids.length - 1)
+      const isHome = id === HOME
+
       timeline.to(camera.position, {
         x: p[0],
-        y: p[1] + 0.5,
-        z: p[2] + distance,
+        y: p[1] + (isHome ? distance * Math.sin(OVERVIEW_ELEVATION) : 0.5),
+        z: p[2] + (isHome ? distance * Math.cos(OVERVIEW_ELEVATION) : distance),
         duration: t,
         ease: 'power2.inOut',
       })
@@ -399,7 +405,14 @@ export default function GraphScene(props: Props) {
     <SceneBoundary>
       <Suspense fallback={<div className="scene-fallback">Preparing your universe…</div>}>
         <Canvas
-          camera={{ position: [0, 0.5, 20], fov: 45 }}
+          camera={{
+            position: [
+              0,
+              20 * Math.sin(OVERVIEW_ELEVATION),
+              20 * Math.cos(OVERVIEW_ELEVATION),
+            ],
+            fov: 45,
+          }}
           dpr={compact ? [1, 1.25] : [1, 1.5]}
           gl={{ antialias: true, alpha: true, powerPreference: 'default' }}
           fallback={

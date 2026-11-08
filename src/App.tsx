@@ -48,7 +48,7 @@ export default function App() {
   const [list, setList] = useState(false)
   const [query, setQuery] = useState('')
   const [highlight, setHighlight] = useState(false)
-  const [zoom, setZoom] = useState(1)
+  const [zoom, setZoom] = useState(0.8)
 
   const node = nodeById.get(selected)!
   const home = selected === HOME
@@ -319,7 +319,7 @@ export default function App() {
                 <button
                   className="icon-button"
                   onClick={() => {
-                    setZoom(1)
+                    setZoom(0.8)
                     select(HOME)
                   }}
                   aria-label="Reset camera"
