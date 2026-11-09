@@ -85,6 +85,7 @@ export const profileSchema = z.object({
   id,
   name: z.string().min(1),
   role: z.string(),
+  motto: z.string(),
   intro: z.string(),
   bio: z.string(),
   email: z.string().email(),
@@ -103,7 +104,6 @@ export const siteSchema = z.object({
   title: z.string(),
   description: z.string(),
   eyebrow: z.string(),
-  introDescription: z.string(),
   categoryLabel: z.string(),
   categories: z.array(
     z.object({

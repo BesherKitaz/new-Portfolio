@@ -75,6 +75,17 @@ export default function ContentPanel({
     .map((id) => nodeById.get(id)!)
     .filter((n) => n.type !== 'profile' && n.type !== 'category')
   const skills = connected.filter((n) => n.type === 'skill')
+  const categoryNodes = graph.nodes.filter(
+    (item) => item.category === node.category && item.type !== 'category',
+  )
+  const featuredProjects = categoryNodes.filter(
+    (item) =>
+      item.type === 'project' &&
+      item.entry &&
+      'featured' in item.entry &&
+      item.entry.featured,
+  )
+  const remainingNodes = categoryNodes.filter((item) => !featuredProjects.includes(item))
   return (
     <article className="content-panel" aria-labelledby="panel-title">
       <div className="panel-top">
@@ -144,12 +155,16 @@ export default function ContentPanel({
               </div>
             </>
           )}
-          <NodeList
-            nodes={graph.nodes.filter(
-              (n) => n.category === node.category && n.type !== 'category',
-            )}
-            onSelect={onSelect}
-          />
+          {featuredProjects.length > 0 && (
+            <section className="panel-section selected-work" aria-label="Selected work">
+              <h3>{content.site.featuredLabel}</h3>
+              <NodeList nodes={featuredProjects} onSelect={onSelect} />
+            </section>
+          )}
+          {featuredProjects.length > 0 && remainingNodes.length > 0 && (
+            <h3 className="more-projects-title">More projects</h3>
+          )}
+          <NodeList nodes={remainingNodes} onSelect={onSelect} />
         </>
       )}
       {entry && 'caseStudy' in entry && (
@@ -237,11 +252,13 @@ export default function ContentPanel({
         <a href={content.profile.resumeUrl} download>
           <Download size={14} /> Download résumé
         </a>
-          <button onClick={() => onSelect('category:contact')}>
-          {!(node.type === 'category' && node.category === 'contact') && (<>
-            {("Get in touch")}
-            <ArrowRight size={14} />
-          </>)}
+        <button onClick={() => onSelect('category:contact')}>
+          {!(node.type === 'category' && node.category === 'contact') && (
+            <>
+              {'Get in touch'}
+              <ArrowRight size={14} />
+            </>
+          )}
         </button>
       </div>
     </article>

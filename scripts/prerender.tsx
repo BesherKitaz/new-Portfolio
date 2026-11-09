@@ -14,6 +14,7 @@ const portfolio = renderToStaticMarkup(
     <header>
       <p>{profile.role.toUpperCase()}</p>
       <h1>{profile.name}</h1>
+      <p>{profile.motto}</p>
       <p>{profile.bio}</p>
       <nav>
         <a href="/">Explore the 3D universe</a> ·{' '}

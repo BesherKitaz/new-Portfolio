@@ -1,5 +1,5 @@
 {
-  "title": "Besher Kitaz \u2014 Interactive Portfolio",
+  "title": "Besher Kitaz — Interactive Portfolio",
   "description": "Explore the projects, technologies, and experiences of software engineer Besher Kitaz through an interactive 3D graph.",
   "eyebrow": "A CONNECTED WORLD OF IDEAS",
   "categoryLabel": "CONSTELLATIONS",
@@ -50,6 +50,5 @@
   "motionDuration": 1.25,
   "featuredLabel": "SELECTED WORK",
   "footer": "Built on curiosity. Connected by code.",
-  "events": [],
-  "introDescription": "Projects, experiences, and the technologies that connect them. Follow your curiosity."
+  "events": []
 }

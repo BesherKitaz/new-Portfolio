@@ -1,4 +1,4 @@
-import { lazy, Suspense, useRef, useState } from 'react'
+import { lazy, Suspense, useCallback, useRef, useState } from 'react'
 import {
   ArrowDownToLine,
   ArrowLeft,
@@ -12,11 +12,7 @@ import {
   Home,
   List,
   Mail,
-  Minus,
-  MoveUpRight,
   Network,
-  Plus,
-  RotateCcw,
   Search,
   Sparkles,
   Users,
@@ -27,6 +23,8 @@ import { HOME, useNavigation, useReducedMotion } from './hooks/useNavigation'
 import ContentPanel, { NodeList } from './components/ContentPanel'
 import Minimap from './components/Minimap'
 import MobileNavigation from './components/MobileNavigation'
+import GestureGuide from './components/GestureGuide'
+import { useGestureGuide } from './hooks/useGestureGuide'
 import './App.css'
 
 const GraphScene = lazy(() => import('./components/GraphScene'))
@@ -48,16 +46,33 @@ export default function App() {
   const [list, setList] = useState(false)
   const [query, setQuery] = useState('')
   const [highlight, setHighlight] = useState(false)
-  const [zoom, setZoom] = useState(0.8)
+  const [draggedRevision, setDraggedRevision] = useState<number | null>(null)
+  const [zoomState, setZoomState] = useState({ revision: -1, hidden: false })
+  const gestureGuide = useGestureGuide()
+
+  const handleZoomChange = useCallback(
+    (hidden: boolean) => {
+      setZoomState({ revision, hidden })
+      if (!hidden) setDraggedRevision(null)
+    },
+    [revision],
+  )
+
+  const handleGraphDrag = useCallback(() => {
+    setDraggedRevision(revision)
+    gestureGuide.dismiss()
+  }, [revision, gestureGuide.dismiss])
 
   const node = nodeById.get(selected)!
   const home = selected === HOME
-  const introWords = content.profile.intro.split(' ')
+  const zoomHidesIntro = zoomState.revision === revision && zoomState.hidden
+  const introHidden = !home || (!list && (draggedRevision === revision || zoomHidesIntro))
 
   const select = (id: string) => {
     travel(id)
     setQuery('')
     setHighlight(false)
+    gestureGuide.dismiss()
     if (id === HOME) main.current?.scrollTo({ top: 0 })
   }
 
@@ -108,8 +123,8 @@ export default function App() {
             </span>
             {content.site.categories.map((c, i) => {
               const Icon = icons[c.id] ?? CircleDot
-            
-  return (
+
+              return (
                 <button
                   key={c.id}
                   className={`nav-item ${node.category === c.id ? 'selected' : ''}`}
@@ -161,12 +176,12 @@ export default function App() {
             )}
           </nav>
           <div className="topbar-right">
-            <span className="system-status">
-              <span className="live-dot" /> ALL SYSTEMS CONNECTED
-            </span>
             <button
               className="view-toggle"
-              onClick={() => setList(!list)}
+              onClick={() => {
+                setList(!list)
+                gestureGuide.dismiss()
+              }}
               aria-pressed={list}
             >
               {list ? <Network size={14} /> : <List size={14} />}
@@ -174,77 +189,7 @@ export default function App() {
             </button>
           </div>
         </header>
-        <main
-          ref={main}
-          id="main-content"
-          className={`main-content ${!home ? 'has-panel' : ''} ${list ? 'list-mode' : ''}`}
-        >
-          {!list && (
-            <div className="galaxy-scene" aria-label="Interactive 3D portfolio graph">
-              <Suspense
-                fallback={<div className="scene-fallback">Preparing your universe…</div>}
-              >
-                <GraphScene
-                  selected={selected}
-                  route={route}
-                  revision={revision}
-                  onSelect={select}
-                  reduced={reduced}
-                  highlight={highlight}
-                  zoom={zoom}
-                />
-              </Suspense>
-            </div>
-          )}
-          <div className="scene-vignette" />
-          <div className="intro">
-            <p className="eyebrow">
-              <span /> {content.site.eyebrow}
-            </p>
-            <h1>
-              {home ? (
-                <>
-                  {introWords.slice(0, -1).join(' ')}
-                  <br />
-                  <em>{introWords.at(-1)}</em>
-                </>
-              ) : (
-                node.label
-              )}
-            </h1>
-            <p className="intro-subtitle">
-              {home ? (
-                <>
-                  {content.profile.name}
-                  <span className="subtitle-dot">·</span>
-                  {content.profile.role.split(' | ')[0]}
-                </>
-              ) : (
-                <>
-                  <span className="live-dot" />{' '}
-                  {node.type === 'category'
-                    ? 'Explore the constellation'
-                    : 'A connected part of the story'}
-                </>
-              )}
-            </p>
-            {home && <p className="intro-description">{content.site.introDescription}</p>}
-            <a
-              className="intro-resume"
-              href={content.profile.resumeUrl}
-              target="_blank"
-              rel="noreferrer"
-            >
-              View résumé <ArrowUpRight size={14} />
-            </a>
-          </div>
-          <div className="scene-top-right">
-            <span className="mono">
-              {String(graph.nodes.length).padStart(2, '0')} NODES
-            </span>
-            <span />
-            <span className="mono">{graph.edges.length} CONNECTIONS</span>
-          </div>
+        <div className="search-toolbar" role="search" aria-label="Portfolio search">
           <div className="search-wrap">
             <Search size={15} />
             <input
@@ -264,6 +209,40 @@ export default function App() {
                 {results.length === 0 && <p>No matching nodes.</p>}
               </div>
             )}
+          </div>
+        </div>
+        <main
+          ref={main}
+          id="main-content"
+          className={`main-content ${!home ? 'has-panel' : ''} ${list ? 'list-mode' : ''}`}
+        >
+          {!list && (
+            <div className="galaxy-scene" aria-label="Interactive 3D portfolio graph">
+              <Suspense
+                fallback={<div className="scene-fallback">Preparing your universe…</div>}
+              >
+                <GraphScene
+                  selected={selected}
+                  route={route}
+                  revision={revision}
+                  onSelect={select}
+                  reduced={reduced}
+                  highlight={highlight}
+                  onDrag={handleGraphDrag}
+                  onReady={gestureGuide.markGraphReady}
+                  onZoomChange={handleZoomChange}
+                />
+              </Suspense>
+            </div>
+          )}
+          <div className="scene-vignette" />
+          {!list && gestureGuide.visible && (
+            <GestureGuide onDismiss={gestureGuide.dismiss} />
+          )}
+          <div className={`intro identity-intro ${introHidden ? 'intro-dismissed' : ''}`}>
+            <h1>{content.profile.name}</h1>
+            <p className="intro-subtitle">{content.profile.role}</p>
+            <p className="intro-motto">{content.profile.motto}</p>
           </div>
           {list && (
             <section className="all-content" aria-label="Accessible portfolio content">
@@ -300,53 +279,6 @@ export default function App() {
                   <span className="phone-gesture">Swipe to rotate · Pinch to zoom</span>
                 </p>
               </div>
-              <div className="scene-controls">
-                <button
-                  className="icon-button"
-                  onClick={() => setZoom((z) => Math.max(0.5, z - 0.2))}
-                  aria-label="Zoom in"
-                >
-                  <Plus size={17} />
-                </button>
-                <button
-                  className="icon-button"
-                  onClick={() => setZoom((z) => Math.min(1.8, z + 0.2))}
-                  aria-label="Zoom out"
-                >
-                  <Minus size={17} />
-                </button>
-                <div />
-                <button
-                  className="icon-button"
-                  onClick={() => {
-                    setZoom(0.8)
-                    select(HOME)
-                  }}
-                  aria-label="Reset camera"
-                >
-                  <RotateCcw size={15} />
-                </button>
-              </div>
-              {home && (
-                <div className="featured-preview">
-                  <span className="section-label">{content.site.featuredLabel}</span>
-                  {content.projects
-                    .filter((p) => p.featured)
-                    .slice(0, 2)
-                    .map((p, i) => (
-                      <button key={p.id} onClick={() => select(`project:${p.id}`)}>
-                        <span className={`project-glyph glyph-${i}`}>
-                          <Box size={20} />
-                        </span>
-                        <span>
-                          <strong>{p.title}</strong>
-                          <small>{p.status.toUpperCase()}</small>
-                        </span>
-                        <MoveUpRight size={16} />
-                      </button>
-                    ))}
-                </div>
-              )}
               <Minimap selected={selected} route={route} onSelect={select} />
             </>
           )}

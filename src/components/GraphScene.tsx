@@ -10,10 +10,22 @@ import { content } from '../content'
 import { graph, hash, neighbors, nodeById } from '../graph/model'
 import type { GraphNode } from '../graph/model'
 import { HOME } from '../hooks/useNavigation'
+import SceneInteraction, { DRAG_THRESHOLD_PX } from './SceneInteraction'
 
 // Raise this angle to look farther down at the overview from above.
 const OVERVIEW_ELEVATION_DEGREES = 18
 const OVERVIEW_ELEVATION = (OVERVIEW_ELEVATION_DEGREES * Math.PI) / 180
+const OVERVIEW_DISTANCE_MULTIPLIER = 0.72
+const CATEGORY_CAMERA_DISTANCE = 7.2
+const ENTRY_CAMERA_DISTANCE = 5.2
+const INITIAL_OVERVIEW_DISTANCE = 20 * OVERVIEW_DISTANCE_MULTIPLIER
+
+function getOverviewDistance(width: number, height: number) {
+  return (
+    Math.max(20, 19 / (2 * Math.tan(Math.PI / 8) * (width / height))) *
+    OVERVIEW_DISTANCE_MULTIPLIER
+  )
+}
 
 interface Props {
   selected: string
@@ -22,7 +34,9 @@ interface Props {
   onSelect: (id: string) => void
   reduced: boolean
   highlight: boolean
-  zoom: number
+  onDrag: () => void
+  onReady: () => void
+  onZoomChange: (hidden: boolean) => void
 }
 
 class SceneBoundary extends Component<{ children: ReactNode }, { failed: boolean }> {
@@ -111,6 +125,7 @@ function CelestialNode({
       <mesh
         ref={mesh}
         onClick={(e) => {
+          if (e.delta > DRAG_THRESHOLD_PX) return
           e.stopPropagation()
           onSelect(node.id)
         }}
@@ -174,10 +189,21 @@ function CelestialNode({
             tabIndex={-1}
             className={`node-label ${root ? 'root-label' : ''} ${category ? 'category-label' : ''} ${active ? 'active' : ''}`}
             style={{ opacity: dim ? 0.35 : 1, pointerEvents: 'auto' }}
-            onClick={() => onSelect(node.id)}
+            onClick={(event) => {
+              event.stopPropagation()
+              onSelect(node.id)
+            }}
+            onPointerDown={(event) => event.stopPropagation()}
+            onPointerEnter={(event) => {
+              event.stopPropagation()
+              onHover(node.id)
+            }}
+            onPointerLeave={(event) => {
+              event.stopPropagation()
+              onHover(null)
+            }}
           >
             {node.label}
-            {root && <span>THE CENTRAL NODE</span>}
           </button>
         </Html>
       )}
@@ -190,9 +216,8 @@ function CameraJourney({
   route,
   revision,
   reduced,
-  zoom,
   controls,
-}: Omit<Props, 'onSelect' | 'highlight'> & {
+}: Omit<Props, 'onSelect' | 'highlight' | 'onDrag' | 'onReady' | 'onZoomChange'> & {
   controls: React.RefObject<OrbitControlsImpl | null>
 }) {
   const { camera, size } = useThree()
@@ -207,16 +232,17 @@ function CameraJourney({
         control.enabled = true
       },
     })
-    const homeDistance = Math.max(
-      20,
-      19 / (2 * Math.tan(Math.PI / 8) * (size.width / size.height)),
-    )
+    const homeDistance = getOverviewDistance(size.width, size.height)
     for (const [i, id] of ids.entries()) {
       if (i === 0 && ids.length > 1) continue
       const node = nodeById.get(id)!
       const p = id === HOME ? [0, 0, 0] : node.position
       const distance =
-        (id === HOME ? homeDistance : node.type === 'category' ? 9 : 6.5) * zoom
+        id === HOME
+          ? homeDistance
+          : node.type === 'category'
+            ? CATEGORY_CAMERA_DISTANCE
+            : ENTRY_CAMERA_DISTANCE
       const t = duration / Math.max(1, ids.length - 1)
       const isHome = id === HOME
 
@@ -244,21 +270,12 @@ function CameraJourney({
       timeline.kill()
       control.enabled = true
     }
-  }, [
-    selected,
-    revision,
-    reduced,
-    zoom,
-    camera,
-    controls,
-    size.width,
-    size.height,
-    route,
-  ]) // route changes with revision
+  }, [selected, revision, reduced, camera, controls, size.width, size.height, route]) // route changes with revision
   return null
 }
 
 function Universe(props: Props & { compact: boolean }) {
+  const { size } = useThree()
   const controls = useRef<OrbitControlsImpl>(null)
   const [hovered, setHovered] = useState<string | null>(null)
   const focus = hovered ?? (props.selected !== HOME ? props.selected : null)
@@ -266,17 +283,16 @@ function Universe(props: Props & { compact: boolean }) {
     () => new Set(focus ? [focus, ...neighbors(focus)] : []),
     [focus],
   )
-  const visibleNodes = props.compact
-    ? graph.nodes.filter(
-        (n) =>
-          n.type === 'profile' ||
-          n.type === 'category' ||
-          vicinity.has(n.id) ||
-          (props.selected !== HOME &&
-            n.category === nodeById.get(props.selected)?.category) ||
-          props.route.includes(n.id),
-      )
-    : graph.nodes
+  // Reveal entries as visitors explore, keeping the overview focused on categories.
+  const visibleNodes = graph.nodes.filter(
+    (node) =>
+      node.type === 'profile' ||
+      node.type === 'category' ||
+      vicinity.has(node.id) ||
+      (props.selected !== HOME &&
+        node.category === nodeById.get(props.selected)?.category) ||
+      props.route.includes(node.id),
+  )
   const visibleIds = new Set(visibleNodes.map((n) => n.id))
   const pathEdges = new Set(
     props.route.slice(1).map((id, i) => [props.route[i], id].sort().join('~')),
@@ -351,6 +367,14 @@ function Universe(props: Props & { compact: boolean }) {
         rotateSpeed={0.45}
         zoomSpeed={0.7}
       />
+      <SceneInteraction
+        controls={controls}
+        onDrag={props.onDrag}
+        onReady={props.onReady}
+        onZoomChange={props.onZoomChange}
+        overviewDistance={getOverviewDistance(size.width, size.height)}
+        isOverview={props.selected === HOME}
+      />
       <CameraJourney {...props} controls={controls} />
     </>
   )
@@ -405,11 +429,20 @@ export default function GraphScene(props: Props) {
     <SceneBoundary>
       <Suspense fallback={<div className="scene-fallback">Preparing your universe…</div>}>
         <Canvas
+          onPointerMissed={(event) => {
+            if (
+              event.type === 'click' &&
+              event.button === 0 &&
+              event.target instanceof HTMLCanvasElement
+            ) {
+              props.onSelect(HOME)
+            }
+          }}
           camera={{
             position: [
               0,
-              20 * Math.sin(OVERVIEW_ELEVATION),
-              20 * Math.cos(OVERVIEW_ELEVATION),
+              INITIAL_OVERVIEW_DISTANCE * Math.sin(OVERVIEW_ELEVATION),
+              INITIAL_OVERVIEW_DISTANCE * Math.cos(OVERVIEW_ELEVATION),
             ],
             fov: 45,
           }}

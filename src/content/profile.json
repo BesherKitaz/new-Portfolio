@@ -1,7 +1,7 @@
 {
   "id": "besher",
   "name": "Besher Kitaz",
-  "role": "Software Engineer | Full-Stack Developer",
+  "role": "Software Developer",
   "intro": "Explore my universe.",
   "bio": "Computer Science at Berea College. Building full-stack software, connecting ideas through code, and helping others learn.",
   "email": "besher.kitaz.dev@gmail.com",
@@ -20,5 +20,6 @@
   "researchInterests": [],
   "publications": [],
   "testimonials": [],
-  "writing": []
+  "writing": [],
+  "motto": "Connecting ideas through code."
 }

@@ -46,7 +46,7 @@ Copy an existing record in `projects.json` and give it a unique lowercase ID. Fo
 }
 ```
 
-Edit `summary` for the list, `description` for an introduction, and `caseStudy` for the longer problem, solution, decisions, contributions, and outcomes. Leave unknown information empty. Preserve qualifications on estimates and potential users. Set `featured: true` to show a project in selected work; up to two are displayed in the compact overview, and every featured project remains in Projects. The node `project:ai-flashcards`, its panel, list entry, and skill edges are generated automatically.
+Edit `summary` for the list, `description` for an introduction, and `caseStudy` for the longer problem, solution, decisions, contributions, and outcomes. Leave unknown information empty. Preserve qualifications on estimates and potential users. Set `featured: true` to show a project in the Selected Work section of the Projects panel. Featured cards no longer appear over the graph. The node `project:ai-flashcards`, its panel, list entry, and skill edges are generated automatically.
 
 ### Screenshots and photos
 
@@ -76,6 +76,8 @@ Add this only if you want to explicitly describe that relationship. This example
 
 Edit a category's hex `color` in `site.json`; entries inherit it. Edit category `position: [x,y,z]` to move a cluster. Entry positions are hashes of stable IDs, so adding records never reshuffles existing entries. `layout.json` can override any node, for example `{"project:safetyhub":[-6,3,1]}`. Do not rename IDs casually: they determine positions, relationships, and incoming links. `motionDuration` controls total camera travel time; operating-system reduced motion skips the animation.
 
+The overview shows the main categories first; individual entries and their cross-connections appear as visitors explore. Camera settings are near the top of `components/GraphScene.tsx`: `OVERVIEW_DISTANCE_MULTIPLIER` controls overview distance (smaller is closer), `OVERVIEW_ELEVATION_DEGREES` controls the viewing angle, and the category/entry distance constants control detail views. Scroll or pinch zoom remains available; there are no on-screen zoom buttons. Your name and `profile.role` form the main introduction. Résumé download links remain in the sidebar, phone menu, and detail panels.
+
 ## Résumé and social links
 
 Replace `public/assets/resume/besher-kitaz-resume.pdf` with a reviewed, privacy-safe PDF. If the filename changes, update `profile.resumeUrl`. Résumé view/download actions and the static page use that path. Manually update the JSON to reflect new résumé facts. Change `profile.socials` to update professional links throughout the site. Never put personal phone numbers, addresses, or immigration details in public files without explicit authorization.
@@ -99,3 +101,8 @@ For an existing supported collection, add its category configuration with a uniq
 ## Phone layout
 
 Phones have a persistent Home / Projects / Skills / Explore navigation bar. Explore includes every category, résumé download, and professional social links. The overview and list use normal vertical scrolling; details open in a larger independently scrolling panel with a sticky close control. Search uses 16px inputs to avoid automatic iOS zoom, and the layout respects safe-area insets and dynamic viewport height. Touch instructions describe swipe and pinch gestures. The phone graph reduces background stars and hides unrelated entry nodes until exploration, while preserving the same data and relationships. Landscape touch devices up to 1000px wide use the phone layout when the viewport is short. Browser tests cover 320, 390, and 430px portrait widths, 844px landscape, and resizing an open menu to desktop.
+
+The introduction uses `profile.motto` for the short motto. It fades only after a real drag or while a non-central node is selected. Hover and a simple press do not hide it. Zooming closer than 82% of the starting overview distance hides it; zooming back beyond 90% restores it. Those separate thresholds prevent flickering near the cutoff. A selected non-central node still keeps it hidden. Selecting the central node, closing details, clicking empty space, or returning Home restores it. Search lives in a dedicated toolbar directly beneath the top bar, including on phones. The Selected Work section appears inside the Projects detail panel and is generated from project `featured` flags.
+
+
+The first successful graph load shows an animated mouse-drag or finger-swipe guide. `useGestureGuide.ts` stores a first-visit timestamp in localStorage under `portfolio:gesture-guide-seen:v1`; later visits skip the guide. It dismisses after eight seconds, when the visitor chooses Got it, or when they navigate or drag. To preview it again during development, delete that key in the browser's developer tools and reload. With reduced motion, the written instructions remain and the pointer stays still. If storage is disabled, the guide remains usable and is limited to once during the current app session.
